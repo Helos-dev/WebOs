@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>HelosOS</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: url("https://raw.githubusercontent.com/Helos-dev/WebOs/refs/heads/main/HelosOs/%E2%80%94Pngtree%E2%80%94futuristic%20hi%20tech%20background%203d_4791887.jpg") no-repeat center/cover;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    #topbar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 28px;
+      background: rgba(15,15,15,0.75);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 12px;
+      color: #eee;
+      z-index: 9999;
+      font-size: 13px;
+    }
+
+    .icon {
+      position: absolute;
+      width: 65px;
+      text-align: center;
+      cursor: pointer;
+      color: #fff;
+      font-size: 11px;
+      padding: 6px 4px;
+      border-radius: 6px;
+    }
+    .icon:hover { background: rgba(255,255,255,0.15); }
+    .icon img { width: 36px; height: 36px; border-radius: 4px; }
+    .icon.sel { background: rgba(100,150,255,0.3); }
+
+    #i1 { top: 45px; left: 15px; }
+    #i2 { top: 45px; left: 95px; }
+    #i3 { top: 45px; left: 175px; }
+
+    .win {
+      position: absolute;
+      width: 380px;
+      min-height: 220px;
+      background: rgba(25,25,30,0.95);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .winheader {
+      background: rgba(0,0,0,0.5);
+      padding: 7px 12px;
+      cursor: grab;
+      user-select: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #ccc;
+      font-size: 13px;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .x {
+      cursor: pointer;
+      color: #999;
+      font-size: 16px;
+      width: 22px;
+      text-align: center;
+      border-radius: 3px;
+      padding: 2px;
+    }
+    .x:hover { color: #ff5f57; background: rgba(255,95,87,0.15); }
+
+    .winbody {
+      padding: 14px;
+      color: #ddd;
+      flex: 1;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+
+    #w1 { top: 90px; left: 50%; transform: translateX(-50%); }
+    #w2 { top: 140px; left: 180px; display: none; }
+    #w3 { top: 190px; left: 320px; display: none; }
+
+    #notesbody { display: flex; }
+    #notesSide {
+      width: 90px;
+      border-right: 1px solid #444;
+      padding-right: 8px;
+    }
+    #notesSide div {
+      padding: 4px 6px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    #notesSide div:hover { background: rgba(255,255,255,0.08); }
+    #notesMain { flex: 1; margin-left: 10px; }
+
+    #calcDisp {
+      background: #0a0a0a;
+      color: #4f4;
+      font-family: 'Courier New', monospace;
+      font-size: 22px;
+      padding: 10px;
+      text-align: right;
+      border-radius: 6px;
+      min-height: 45px;
+      margin-bottom: 8px;
+    }
+    #calcBtns {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+    }
+    #calcBtns button {
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background: #333;
+      color: #fff;
+      cursor: pointer;
+    }
+    #calcBtns button:hover { background: #444; }
+    #calcBtns .op { background: #4a4a5a; }
+    #calcBtns .eq { background: #2a8; }
+  </style>
+</head>
+<body>
+
+  <div id="topbar">
+    <span>HelosOS</span>
+    <span id="clock"></span>
+  </div>
+
+  <div class="icon" id="i1" onclick="tapIcon(this,'w1')">
+    <img src="img/ic1.svg">
+    <p>About</p>
+  </div>
+  <div class="icon" id="i2" onclick="tapIcon(this,'w2')">
+    <img src="img/ic2.svg">
+    <p>Notes</p>
+  </div>
+  <div class="icon" id="i3" onclick="tapIcon(this,'w3')">
+    <img src="img/ic3.svg">
+    <p>Calc</p>
+  </div>
+
+  <div class="win" id="w1">
+    <div class="winheader">
+      <span>About</span>
+      <span class="x" onclick="hide('w1')">×</span>
+    </div>
+    <div class="winbody">
+      <h3 style="margin-bottom:8px">HelosOS</h3>
+      <p>first webos made from scratch. html css js.</p>
+      <br>
+      <p>drag from the top bar, × to close, icon to reopen.</p>
+    </div>
+  </div>
+
+  <div class="win" id="w2">
+    <div class="winheader">
+      <span>Notes</span>
+      <span class="x" onclick="hide('w2')">×</span>
+    </div>
+    <div class="winbody" id="notesbody">
+      <div id="notesSide"></div>
+      <div id="notesMain">
+        <p>click a note on the left</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="win" id="w3">
+    <div class="winheader">
+      <span>Calc</span>
+      <span class="x" onclick="hide('w3')">×</span>
+    </div>
+    <div class="winbody">
+      <div id="calcDisp">0</div>
+      <div id="calcBtns">
+        <button onclick="cp('7')">7</button>
+        <button onclick="cp('8')">8</button>
+        <button onclick="cp('9')">9</button>
+        <button class="op" onclick="cp('/')">÷</button>
+        <button onclick="cp('4')">4</button>
+        <button onclick="cp('5')">5</button>
+        <button onclick="cp('6')">6</button>
+        <button class="op" onclick="cp('*')">×</button>
+        <button onclick="cp('1')">1</button>
+        <button onclick="cp('2')">2</button>
+        <button onclick="cp('3')">3</button>
+        <button class="op" onclick="cp('-')">−</button>
+        <button onclick="cp('0')">0</button>
+        <button onclick="cp('.')">.</button>
+        <button class="op" onclick="cp('+')">+</button>
+        <button class="eq" onclick="ce()">=</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function tick() {
+      var d = new Date();
+      var h = d.getHours();
+      var m = d.getMinutes();
+      if(h<10) h="0"+h;
+      if(m<10) m="0"+m;
+      document.getElementById("clock").textContent = h+":"+m;
+    }
+    setInterval(tick, 1000);
+
+    function drag(el) {
+      var sx=0, sy=0, cx=0, cy=0;
+      var hdr = el.querySelector(".winheader");
+      hdr.onmousedown = function(e) {
+        e.preventDefault();
+        sx = e.clientX; sy = e.clientY;
+        document.onmouseup = endDrag;
+        document.onmousemove = move;
+      };
+      function move(e) {
+        e.preventDefault();
+        cx = sx - e.clientX;
+        cy = sy - e.clientY;
+        sx = e.clientX; sy = e.clientY;
+        el.style.top = (el.offsetTop - cy) + "px";
+        el.style.left = (el.offsetLeft - cx) + "px";
+        el.style.transform = "none";
+      }
+      function endDrag() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+      }
+    }
+
+    function hide(id) { document.getElementById(id).style.display = "none"; }
+    function show(id) { document.getElementById(id).style.display = "flex"; }
+
+    var selIcon = null;
+    function tapIcon(el, winId) {
+      if(selIcon === el) {
+        el.classList.remove("sel");
+        selIcon = null;
+        hide(winId);
+      } else {
+        if(selIcon) selIcon.classList.remove("sel");
+        el.classList.add("sel");
+        selIcon = el;
+        show(winId);
+      }
+    }
+
+    var zi = 10;
+    var wins = document.querySelectorAll(".win");
+    wins.forEach(function(w) {
+      w.addEventListener("mousedown", function() {
+        zi++;
+        w.style.zIndex = zi;
+      });
+      drag(w);
+    });
+
+    var nts = [
+      {t:"idea", c:"make an os in the browser"},
+      {t:"todo", c:"finish the stardance mission"},
+      {t:"random", c:"eat something"}
+    ];
+    var ns = document.getElementById("notesSide");
+    nts.forEach(function(n) {
+      var d = document.createElement("div");
+      d.textContent = n.t;
+      d.onclick = function() {
+        document.getElementById("notesMain").innerHTML = "<b>"+n.t+"</b><br>"+n.c;
+      };
+      ns.appendChild(d);
+    });
+
+    var expr = "";
+    function cp(v) {
+      expr += v;
+      document.getElementById("calcDisp").textContent = expr;
+    }
+    function ce() {
+      try {
+        expr = eval(expr)+"";
+        document.getElementById("calcDisp").textContent = expr;
+      } catch(e) {
+        document.getElementById("calcDisp").textContent = "err";
+        expr = "";
+      }
+    }
+  </script>
+
+</body>
+</html>   
