@@ -1,4 +1,4 @@
-##HelosOS
+## HelosOS
 HelosOS is a webOS 
 it has basic features like cloack about notes and calculator
 try it at: https://helos-os.netlify.app/
